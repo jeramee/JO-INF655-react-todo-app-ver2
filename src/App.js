@@ -29,16 +29,16 @@ const App = () => {
   };
   
 
-  // Function to add a sub-task to an existing task
-  const handleAddSubTask = (taskId, subTaskDescription) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId
-          ? { ...task, subTasks: [...task.subTasks, { id: task.subTasks.length + 1, description: subTaskDescription, completed: false }] }
-          : task
-      )
-    );
-  };
+// Function to add a sub-task to an existing task
+const handleAddSubTask = (taskId, subTaskDescription) => {
+  setTasks(
+    tasks.map((task) =>
+      task.id === taskId
+        ? { ...task, subTasks: [...task.subTasks, { id: uuidv4(), description: subTaskDescription, completed: false }] }
+        : task
+    )
+  );
+};
   
 
   // Function to mark a sub-task as completed or not completed
