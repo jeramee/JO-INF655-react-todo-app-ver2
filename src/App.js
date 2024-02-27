@@ -9,9 +9,57 @@ const App = () => {
   const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
 
   // Function to add a new task to the list
-  const handleAddTask = (newTask) => {
-    // Adding the new task to the list with an onEdit function
-    setTasks([...tasks, { ...newTask, onEdit: handleEditTask }]);
+  const handleAddTask = (taskDescription, subTaskDescription) => {
+    const newTask = {
+      id: tasks.length + 1,
+      title: taskDescription,
+      description: subTaskDescription, // Assign sub-task description to main task description
+      completed: false,
+      subTasks: [],
+    };
+
+    setTasks([...tasks, newTask]);
+  };
+
+  // Function to add a sub-task to an existing task
+  const handleAddSubTask = (taskId, subTaskDescription) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? { ...task, subTasks: [...task.subTasks, { id: task.subTasks.length + 1, description: subTaskDescription, completed: false }] }
+          : task
+      )
+    );
+  };
+
+  // Function to mark a sub-task as completed or not completed
+  const handleCompleteSubTask = (taskId, subTaskId) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              subTasks: task.subTasks.map((subTask) =>
+                subTask.id === subTaskId ? { ...subTask, completed: !subTask.completed } : subTask
+              ),
+            }
+          : task
+      )
+    );
+  };
+
+  // Function to delete a sub-task from an existing task
+  const handleDeleteSubTask = (taskId, subTaskId) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              subTasks: task.subTasks.filter((subTask) => subTask.id !== subTaskId),
+            }
+          : task
+      )
+    );
   };
 
   // Function to edit an existing task in the list
@@ -53,13 +101,17 @@ const App = () => {
         {tasks.map((task, index) => (
           <Task
             key={index}
-            id={index}  
+            id={index}
             title={task.title}
             description={task.description}
             completed={task.completed}
+            subTasks={task.subTasks}
             onToggleComplete={() => handleToggleComplete(index)}
             onDelete={() => handleDeleteTask(index)}
             onEdit={handleEditTask}
+            onAddSubTask={(subTaskDescription) => handleAddSubTask(index, subTaskDescription)}
+            onCompleteSubTask={(subTaskId) => handleCompleteSubTask(index, subTaskId)}
+            onDeleteSubTask={(subTaskId) => handleDeleteSubTask(index, subTaskId)}
           />
         ))}
       </div>
