@@ -9,6 +9,7 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
   const [editedDescription, setEditedDescription] = useState(description);
   const [addingDescription, setAddingDescription] = useState(false);
   const [subTaskDescription, setSubTaskDescription] = useState(''); // State for sub-task description
+  const [addingSubTask, setAddingSubTask] = useState(false); // State to track adding Sub-Task
 
   const handleSaveEdit = () => {
     onEdit(id, editedTitle, editedDescription);
@@ -28,9 +29,16 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
   };
 
   const handleAddSubTask = () => {
+    setAddingSubTask(true);
+    setEditing(true);
+  };
+
+  const handleSaveSubTask = () => {
+    // You can add the logic to save the Sub-Task here
     if (subTaskDescription.trim() !== '') {
       onAddSubTask(id, subTaskDescription);
-      setSubTaskDescription(''); // Clear the input field after adding a sub-task
+      setSubTaskDescription('');
+      setAddingSubTask(false);
     }
   };
 
@@ -66,7 +74,19 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
                 onChange={(e) => setSubTaskDescription(e.target.value)}
                 placeholder="Sub-Task Description"
               />
-              <button onClick={handleAddSubTask}>Add Sub-Task</button>
+              <button onClick={handleSaveSubTask}>Add Sub-Task</button>
+            </div>
+          )}
+          {addingSubTask && (
+            <div>
+              {/* Input field for adding sub-task description */}
+              <input
+                type="text"
+                value={subTaskDescription}
+                onChange={(e) => setSubTaskDescription(e.target.value)}
+                placeholder="Sub-Task Description"
+              />
+              <button onClick={handleSaveSubTask}>Save Sub-Task</button>
             </div>
           )}
         </>
@@ -81,22 +101,20 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
           {description && (
             <span style={{ display: 'none' }}>{description}</span>
           )}
+          {/* Displaying sub-tasks in a list */}
+          {subTasks && subTasks.length > 0 && (
+            <div className="sub-tasks">
+              <h4>Sub-Tasks:</h4>
+              <ul>
+                {subTasks.map((subTask) => (
+                  <li key={subTask.id}>
+                    <span style={{ display: 'none' }}>{subTask.description}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </>
-      )}
-      {subTasks && subTasks.length > 0 && (
-        <div className="sub-tasks">
-          <h4>Sub-Tasks:</h4>
-          {subTasks.map((subTask) => (
-            <SubTask
-              key={subTask.id}
-              id={subTask.id}
-              description={subTask.description}
-              completed={subTask.completed}
-              onComplete={() => onCompleteSubTask(id, subTask.id)}
-              onDelete={() => onDeleteSubTask(id, subTask.id)}
-            />
-          ))}
-        </div>
       )}
       {isEditing && (
         <>
@@ -110,6 +128,8 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
           {/* Edit and add/edit description buttons when not editing */}
           <button onClick={() => setEditing(true)}>Edit</button>
           <button onClick={handleAddDescription}>Add/Edit Description</button>
+          {/* Button to add sub-task */}
+          <button onClick={handleAddSubTask}>Add Sub-Task</button>
         </>
       )}
       {/* Delete button for task */}

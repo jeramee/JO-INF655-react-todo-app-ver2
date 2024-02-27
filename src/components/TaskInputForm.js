@@ -1,38 +1,46 @@
 // TaskInputForm.js
 import React, { useState } from 'react';
 
-const TaskForm = ({ onAddTask }) => {
+const TaskInputForm = ({ onAddTask }) => {
   const [taskDescription, setTaskDescription] = useState('');
-  const [subTaskDescription, setSubTaskDescription] = useState(''); // Add state for sub-task
+  const [subTaskDescription, setSubTaskDescription] = useState(''); // New state for sub-task description
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (taskDescription.trim() && subTaskDescription.trim()) {
-      onAddTask(taskDescription, subTaskDescription);
-      setTaskDescription('');
-      setSubTaskDescription('');
-    } else {
-      alert('Task and Sub-Task descriptions cannot be empty.');
-    }
+  const handleTaskDescriptionChange = (e) => {
+    setTaskDescription(e.target.value);
+  };
+
+  const handleSubTaskDescriptionChange = (e) => {
+    setSubTaskDescription(e.target.value);
+  };
+
+  const handleAddTask = () => {
+    // Pass both task and sub-task descriptions to onAddTask
+    onAddTask(taskDescription, subTaskDescription);
+    // Clear input fields after adding the task
+    setTaskDescription('');
+    setSubTaskDescription('');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
+      {/* Input field for task description */}
       <input
         type="text"
+        placeholder="Task Description"
         value={taskDescription}
-        onChange={(e) => setTaskDescription(e.target.value)}
-        placeholder="Add a new task"
+        onChange={handleTaskDescriptionChange}
       />
+      {/* Input field for sub-task description */}
       <input
         type="text"
+        placeholder="Sub-Task Description"
         value={subTaskDescription}
-        onChange={(e) => setSubTaskDescription(e.target.value)}
-        placeholder="Add a sub-task"
+        onChange={handleSubTaskDescriptionChange}
       />
-      <button type="submit">Add Task</button>
-    </form>
+      {/* Button to add task */}
+      <button onClick={handleAddTask}>Add Task</button>
+    </div>
   );
 };
 
-export default TaskForm;
+export default TaskInputForm;

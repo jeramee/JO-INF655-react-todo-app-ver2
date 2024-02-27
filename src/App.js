@@ -1,25 +1,33 @@
 // App.js
 import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid'; // Import uuidv4
 import Task from './components/Task';
 import TaskInputForm from './components/TaskInputForm';
 
 // App component manages the overall application state and renders Task components
 const App = () => {
   // State to manage the list of tasks, initialized from localStorage or an empty array
-  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
+  // const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
+  const [tasks, setTasks] = useState([]);
+  const [taskDescription, setTaskDescription] = useState('');
+  const [subTaskDescription, setSubTaskDescription] = useState('');
 
   // Function to add a new task to the list
   const handleAddTask = (taskDescription, subTaskDescription) => {
     const newTask = {
-      id: tasks.length + 1,
+      id: uuidv4(),
       title: taskDescription,
-      description: subTaskDescription, // Assign sub-task description to main task description
+      description: subTaskDescription,
       completed: false,
       subTasks: [],
     };
-
+  
     setTasks([...tasks, newTask]);
+    // Clear input fields after adding the task
+    setTaskDescription('');
+    setSubTaskDescription('');
   };
+  
 
   // Function to add a sub-task to an existing task
   const handleAddSubTask = (taskId, subTaskDescription) => {
@@ -31,6 +39,7 @@ const App = () => {
       )
     );
   };
+  
 
   // Function to mark a sub-task as completed or not completed
   const handleCompleteSubTask = (taskId, subTaskId) => {
@@ -98,22 +107,24 @@ const App = () => {
       <TaskInputForm onAddTask={handleAddTask} />
       <div>
         {/* Mapping over tasks to render individual Task components */}
-        {tasks.map((task, index) => (
-          <Task
-            key={index}
-            id={index}
-            title={task.title}
-            description={task.description}
-            completed={task.completed}
-            subTasks={task.subTasks}
-            onToggleComplete={() => handleToggleComplete(index)}
-            onDelete={() => handleDeleteTask(index)}
-            onEdit={handleEditTask}
-            onAddSubTask={(subTaskDescription) => handleAddSubTask(index, subTaskDescription)}
-            onCompleteSubTask={(subTaskId) => handleCompleteSubTask(index, subTaskId)}
-            onDeleteSubTask={(subTaskId) => handleDeleteSubTask(index, subTaskId)}
-          />
-        ))}
+        {tasks.map((task, index) => {
+          console.log("Rendering Task:", task); // Check if this log statement appears in the console
+          return (
+            <Task
+              key={index}
+              id={index}
+              title={task.title}
+              description={task.description}
+              completed={task.completed}
+              onToggleComplete={() => handleToggleComplete(index)}
+              onDelete={() => handleDeleteTask(index)}
+              onEdit={handleEditTask}
+              onAddSubTask={(subTaskDescription) => handleAddSubTask(index, subTaskDescription)}
+              onCompleteSubTask={(subTaskId) => handleCompleteSubTask(index, subTaskId)}
+              onDeleteSubTask={(subTaskId) => handleDeleteSubTask(index, subTaskId)}
+            />
+          );
+        })}
       </div>
     </div>
   );
