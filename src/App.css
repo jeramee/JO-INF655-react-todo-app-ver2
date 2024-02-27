@@ -1,0 +1,52 @@
+/* App.css */
+
+/* Styles for the main application container */
+
+.App {
+  text-align: center; /* Center align text within the container */
+}
+
+/* Styles for the App logo */
+
+.App-logo {
+  height: 40vmin; /* Set height relative to the viewport height */
+  pointer-events: none; /* Ensure the logo doesn't interfere with pointer events */
+}
+
+/* Animation styles for the App logo spin, considering user preferences for reduced motion */
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear; /* Apply spin animation */
+  }
+}
+
+/* Styles for the App header */
+
+.App-header {
+  background-color: #282c34; /* Set background color */
+  min-height: 100vh; /* Set minimum height to cover the entire viewport */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Arrange children in a column */
+  align-items: center; /* Center align items horizontally */
+  justify-content: center; /* Center align items vertically */
+  font-size: calc(10px + 2vmin); /* Responsive font size based on viewport */
+  color: white; /* Set text color to white */
+}
+
+/* Styles for hyperlinks within the App */
+
+.App-link {
+  color: #61dafb; /* Set hyperlink color */
+}
+
+/* Keyframes for the spin animation of the App logo */
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg); /* Start rotation from 0 degrees */
+  }
+  to {
+    transform: rotate(360deg); /* End rotation at 360 degrees for a full spin */
+  }
+}
