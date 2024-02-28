@@ -1,13 +1,7 @@
-// ./components/Task/Task.js
-
 import React, { useState } from 'react';
-import SubTask from './SubTask';
-import { v4 as uuidv4 } from 'uuid';
 import './Task.css';
 
-const Task = ({ id, title, description, completed, subTasks, onToggleComplete, onDelete, onEdit, onAddSubTask, onCompleteSubTask, onDeleteSubTask }) => {
-  console.log("Rendering Task:", title, description, subTasks);
-  const [isEditing, setEditing] = useState(false);
+const Task = ({ id, title, description, completed, subTasks, onToggleComplete, onDelete, onEdit, onAddSubTask, onCompleteSubTask, onDeleteSubTask }) => {  const [isEditing, setEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedDescription, setEditedDescription] = useState(description);
   const [addingDescription, setAddingDescription] = useState(false);
@@ -104,7 +98,10 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
               <h4>Sub-Tasks:</h4>
               <ul>
                 {subTasks.map((subTask) => (
-                  <SubTask key={subTask.id} subTaskDescription={subTask.description} />
+                  <li key={subTask.id}>
+                    {subTask.description}
+                    <button onClick={() => onAddSubTask(id, subTask.description)}>Add Sub-Task</button>
+                  </li>
                 ))}
               </ul>
             </div>
