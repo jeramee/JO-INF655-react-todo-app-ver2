@@ -1,14 +1,36 @@
 // App.js
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // Import uuidv4
-import Task from './components/Task';
 import TaskInputForm from './components/TaskInputForm';
+import TaskList from './components/TaskList';  // Import TaskList component
+import './App.css';
+
+
+
+const initialTasks = [
+  {
+    id: uuidv4(),
+    title: 'Bob',
+    description: 'About Bob',
+    completed: false,
+    subTasks: [
+      { id: uuidv4(), description: 'bob1', completed: false },
+      { id: uuidv4(), description: 'bob2', completed: false },
+      { id: uuidv4(), description: 'bob3', completed: false },
+      { id: uuidv4(), description: 'bob4', completed: false },
+      { id: uuidv4(), description: 'bob5', completed: false },
+    ],
+  },
+
+];
+
 
 // App component manages the overall application state and renders Task components
 const App = () => {
   // State to manage the list of tasks, initialized from localStorage or an empty array
   // const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
-  const [tasks, setTasks] = useState([]);
+  // const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(initialTasks);
   const [taskDescription, setTaskDescription] = useState('');
   const [subTaskDescription, setSubTaskDescription] = useState('');
 
@@ -31,10 +53,16 @@ const App = () => {
 
 // Function to add a sub-task to an existing task
 const handleAddSubTask = (taskId, subTaskDescription) => {
-  setTasks(
-    tasks.map((task) =>
+  setTasks((prevTasks) =>
+    prevTasks.map((task) =>
       task.id === taskId
-        ? { ...task, subTasks: [...task.subTasks, { id: uuidv4(), description: subTaskDescription, completed: false }] }
+        ? {
+            ...task,
+            subTasks: [
+              ...task.subTasks,
+              { id: uuidv4(), description: subTaskDescription, completed: false },
+            ],
+          }
         : task
     )
   );
@@ -102,30 +130,18 @@ const handleAddSubTask = (taskId, subTaskDescription) => {
   }, [tasks]);
 
   return (
-    <div className="App">
-      {/* TaskInputForm component for adding new tasks */}
+    <div className="app">
+      <h1>Task Manager</h1>
       <TaskInputForm onAddTask={handleAddTask} />
-      <div>
-        {/* Mapping over tasks to render individual Task components */}
-        {tasks.map((task, index) => {
-          console.log("Rendering Task:", task); // Check if this log statement appears in the console
-          return (
-            <Task
-              key={index}
-              id={index}
-              title={task.title}
-              description={task.description}
-              completed={task.completed}
-              onToggleComplete={() => handleToggleComplete(index)}
-              onDelete={() => handleDeleteTask(index)}
-              onEdit={handleEditTask}
-              onAddSubTask={(subTaskDescription) => handleAddSubTask(index, subTaskDescription)}
-              onCompleteSubTask={(subTaskId) => handleCompleteSubTask(index, subTaskId)}
-              onDeleteSubTask={(subTaskId) => handleDeleteSubTask(index, subTaskId)}
-            />
-          );
-        })}
-      </div>
+      <TaskList
+        tasks={tasks}
+        onToggleComplete={handleToggleComplete}
+        onDeleteTask={handleDeleteTask}
+        onEditTask={handleEditTask}
+        onAddSubTask={handleAddSubTask}
+        onCompleteSubTask={handleCompleteSubTask}
+        onDeleteSubTask={handleDeleteSubTask}
+      />
     </div>
   );
 };

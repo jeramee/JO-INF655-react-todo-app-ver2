@@ -15,10 +15,11 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
 
   const handleSaveEdit = () => {
     console.log('Saving Task Edit:', editedTitle, editedDescription);
-    onEdit(id, editedTitle, editedDescription);
+    onEdit(id, editedTitle, editedDescription);  // Ensure onEdit is correctly passed
     setEditing(false);
     setAddingDescription(false);
   };
+  
 
   const handleAddDescription = () => {
     console.log('Adding Task Description:', editedDescription);
