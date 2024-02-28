@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
 import './Task.css';
 
-const Task = ({ id, title, description, completed, subTasks, onToggleComplete, onDelete, onEdit, onAddSubTask, onCompleteSubTask, onDeleteSubTask }) => {  const [isEditing, setEditing] = useState(false);
+const Task = ({
+  id,
+  title,
+  description,
+  completed,
+  subTasks,
+  onToggleComplete,
+  onDelete,
+  onEdit,
+  onAddSubTask,
+  onCompleteSubTask,
+  onDeleteSubTask,
+}) => {
+  const [isEditing, setEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedDescription, setEditedDescription] = useState(description);
   const [addingDescription, setAddingDescription] = useState(false);
   const [subTaskDescription, setSubTaskDescription] = useState('');
   const [addingSubTask, setAddingSubTask] = useState(false);
 
-  // Function to handle saving edits
   const handleSaveEdit = () => {
-    onEdit(id, editedTitle, editedDescription);
+    onEdit(id, editedTitle, editedDescription, subTasks);
     setEditing(false);
     setAddingDescription(false);
   };

@@ -1,9 +1,8 @@
-// App.js
-
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
-import Task from './components/Task';
+import Task from './components/Task/Task';
+import TaskInputForm from './components/Task/TaskInputForm';
 
 const App = () => {
   const bobTaskUUID = '123e4567-e89b-12d3-a456-426614174001';
@@ -133,6 +132,7 @@ const App = () => {
         onCompleteSubTask={handleCompleteSubTask}
         onDeleteSubTask={handleDeleteSubTask}
       />
+      <TaskInputForm onAddTask={handleAddTask} />
       <header>
         <a
           className="App-link"
