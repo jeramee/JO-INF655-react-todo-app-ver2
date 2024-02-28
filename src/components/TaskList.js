@@ -5,7 +5,7 @@ const TaskList = ({
   tasks,
   onToggleComplete,
   onDeleteTask,
-  onEditTask,
+  onEdit,
   onAddSubTask,
   onCompleteSubTask,
   onDeleteSubTask,
@@ -15,14 +15,17 @@ const TaskList = ({
       {tasks.map((task, index) => (
         <Task
             key={task.id}
-            index={index}
-            task={task}
-            onToggleComplete={onToggleComplete}
-            onDeleteTask={onDeleteTask}
-            onEdit={onEditTask}  // Pass onEdit as a prop
-            onAddSubTask={onAddSubTask}
-            onCompleteSubTask={onCompleteSubTask}
-            onDeleteSubTask={onDeleteSubTask}
+            id={task.id}
+            title={task.title}
+            description={task.description}
+            completed={task.completed}
+            subTasks={task.subTasks}
+            onToggleComplete={() => onToggleComplete(index)}
+            onDeleteTask={() => onDeleteTask(index)}
+            onEdit={(newTitle, newDescription) => onEdit(task.id, newTitle, newDescription)}
+            onAddSubTask={() => onAddSubTask(index)}
+            onCompleteSubTask={(subTaskId) => onCompleteSubTask(index, subTaskId)}
+            onDeleteSubTask={(subTaskId) => onDeleteSubTask(index, subTaskId)}
         />
       ))}
     </div>

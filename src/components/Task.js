@@ -1,11 +1,11 @@
 // Task.js
 import React, { useState } from 'react';
-import SubTask from './SubTask'; // Import SubTask component
-import { v4 as uuidv4 } from 'uuid'; // Import uuidv4
+import SubTask from './SubTask';
+import { v4 as uuidv4 } from 'uuid';
 import './Task.css';
 
 const Task = ({ id, title, description, completed, subTasks, onToggleComplete, onDelete, onEdit, onAddSubTask, onCompleteSubTask, onDeleteSubTask }) => {
-  console.log("Rendering Task:", title, description, subTasks);  
+  console.log("Rendering Task:", title, description, subTasks);
   const [isEditing, setEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedDescription, setEditedDescription] = useState(description);
@@ -13,16 +13,14 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
   const [subTaskDescription, setSubTaskDescription] = useState('');
   const [addingSubTask, setAddingSubTask] = useState(false);
 
+  // Function to handle saving edits
   const handleSaveEdit = () => {
-    console.log('Saving Task Edit:', editedTitle, editedDescription);
-    onEdit(id, editedTitle, editedDescription);  // Ensure onEdit is correctly passed
+    onEdit(id, editedTitle, editedDescription);
     setEditing(false);
     setAddingDescription(false);
   };
-  
 
   const handleAddDescription = () => {
-    console.log('Adding Task Description:', editedDescription);
     setAddingDescription(true);
     setEditing(true);
   };
@@ -34,13 +32,11 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
   };
 
   const handleAddSubTask = () => {
-    console.log('Adding Sub-Task:', subTaskDescription);
     setAddingSubTask(true);
     setEditing(true);
   };
 
   const handleSaveSubTask = () => {
-    console.log('Saving Sub-Task:', subTaskDescription);
     if (subTaskDescription.trim() !== '') {
       onAddSubTask(id, subTaskDescription);
       setSubTaskDescription('');
@@ -49,10 +45,11 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
   };
 
   return (
-    <div className={`task ${completed ? 'completed' : ''}`} title={`Task ${id}`}>      <input
+    <div className={`task ${completed ? 'completed' : ''}`} title={`Task ${id}`}>
+      <input
         type="checkbox"
         checked={completed}
-        onChange={onToggleComplete}
+        onChange={() => onToggleComplete(id)} // Pass the taskId to onToggleComplete
       />
       {isEditing && (
         <>
@@ -101,7 +98,6 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
           {description && (
             <span style={{ display: 'none' }}>{description}</span>
           )}
-          {/* Displaying sub-tasks in a list */}
           {subTasks && subTasks.length > 0 && (
             <div className="sub-tasks">
               <h4>Sub-Tasks:</h4>
@@ -127,7 +123,7 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
           <button onClick={handleAddSubTask}>Add Sub-Task</button>
         </>
       )}
-      <button onClick={onDelete}>X</button>
+      <button onClick={() => onDelete(id)}>X</button>
     </div>
   );
 };
