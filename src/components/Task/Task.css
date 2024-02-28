@@ -1,0 +1,19 @@
+/* ./components/Task/Task.css */
+
+/* 
+   Styles for the task container.
+   Uses flexbox to align items in a row, with a margin of 8 pixels.
+*/
+.task {
+  display: flex;
+  align-items: center;
+  margin: 8px;
+}
+
+/* 
+ Styles for completed tasks.
+ Applies a line-through text decoration to visually distinguish completed tasks.
+*/
+.completed {
+  text-decoration: line-through;
+}

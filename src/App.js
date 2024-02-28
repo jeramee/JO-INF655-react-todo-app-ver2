@@ -5,29 +5,11 @@ import Task from './components/Task/Task';
 import TaskInputForm from './components/Task/TaskInputForm';
 
 const App = () => {
-  const bobTaskUUID = '123e4567-e89b-12d3-a456-426614174001';
-  const bobSubTasks = [
-    { id: 1, description: 'Bob1' },
-    { id: 2, description: 'Bob2' },
-    { id: 3, description: 'Bob3' },
-    { id: 4, description: 'Bob4' },
-    { id: 5, description: 'Bob5' },
-  ];
-
-  const [tasks, setTasks] = useState([
-    {
-      id: uuidv4(),
-      title: 'Bob',
-      description: 'About Bob',
-      completed: false,
-      subTasks: bobSubTasks,
-    },
-  ]);
-
+  const [tasks, setTasks] = useState([]);
   const [taskDescription, setTaskDescription] = useState('');
   const [subTaskDescription, setSubTaskDescription] = useState('');
 
-  const handleAddTask = (taskDescription, subTaskDescription) => {
+  const handleAddTask = () => {
     const newTask = {
       id: uuidv4(),
       title: taskDescription,
@@ -58,8 +40,8 @@ const App = () => {
   };
 
   const handleCompleteSubTask = (taskId, subTaskId) => {
-    setTasks(
-      tasks.map((task) =>
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
         task.id === taskId
           ? {
               ...task,
@@ -73,8 +55,8 @@ const App = () => {
   };
 
   const handleDeleteSubTask = (taskId, subTaskId) => {
-    setTasks(
-      tasks.map((task) =>
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
         task.id === taskId
           ? {
               ...task,
@@ -96,22 +78,17 @@ const App = () => {
   };
 
   const handleToggleComplete = (taskId) => {
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === taskId) {
-        // Check if task is defined before accessing its properties
-        const completed = task.completed !== undefined ? !task.completed : false;
-        return { ...task, completed };
-      }
-      return task;
-    });
-  
-    setTasks(updatedTasks);
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId
+          ? { ...task, completed: !task.completed }
+          : task
+      )
+    );
   };
 
-  const handleDeleteTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1);
-    setTasks(updatedTasks);
+  const handleDeleteTask = (taskId) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   };
 
   useEffect(() => {
@@ -121,13 +98,14 @@ const App = () => {
   return (
     <div className="app">
       <h1>Task Manager</h1>
+
       <Task
-        title="Bob"
-        description="About Bob"
-        subTasks={bobSubTasks}
+        title="Task Title"
+        description="Task Description"
+        subTasks={tasks[0] ? tasks[0].subTasks : []}
         onEdit={handleEditTask}
         onAddSubTask={handleAddSubTask}
-        onToggleComplete={handleToggleComplete}  
+        onToggleComplete={handleToggleComplete}
         onDelete={handleDeleteTask}
         onCompleteSubTask={handleCompleteSubTask}
         onDeleteSubTask={handleDeleteSubTask}
@@ -142,7 +120,7 @@ const App = () => {
         >
           Learn React
         </a>
-      </header>   
+      </header>
     </div>
   );
 };
