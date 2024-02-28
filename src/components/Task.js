@@ -1,19 +1,30 @@
-// Task.js
-import React, { useState } from 'react';
-import SubTask from './SubTask';
-import { v4 as uuidv4 } from 'uuid';
-import './Task.css';
+// ./components/Task/Task.js
 
-const Task = ({ id, title, description, completed, subTasks, onToggleComplete, onDelete, onEdit, onAddSubTask, onCompleteSubTask, onDeleteSubTask }) => {
-  console.log("Rendering Task:", title, description, subTasks);
+import React, { useState } from "react";
+import SubTask from "./SubTask";
+import { v4 as uuidv4 } from "uuid";
+import "./Task.css";
+
+export default function Task({
+  id,
+  title,
+  description,
+  completed,
+  subTasks,
+  onToggleComplete,
+  onDelete,
+  onEdit,
+  onAddSubTask,
+  onCompleteSubTask,
+  onDeleteSubTask,
+}) {
   const [isEditing, setEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedDescription, setEditedDescription] = useState(description);
   const [addingDescription, setAddingDescription] = useState(false);
-  const [subTaskDescription, setSubTaskDescription] = useState('');
+  const [subTaskDescription, setSubTaskDescription] = useState("");
   const [addingSubTask, setAddingSubTask] = useState(false);
 
-  // Function to handle saving edits
   const handleSaveEdit = () => {
     onEdit(id, editedTitle, editedDescription);
     setEditing(false);
@@ -37,19 +48,19 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
   };
 
   const handleSaveSubTask = () => {
-    if (subTaskDescription.trim() !== '') {
+    if (subTaskDescription.trim() !== "") {
       onAddSubTask(id, subTaskDescription);
-      setSubTaskDescription('');
+      setSubTaskDescription("");
       setAddingSubTask(false);
     }
   };
 
   return (
-    <div className={`task ${completed ? 'completed' : ''}`} title={`Task ${id}`}>
+    <div className={`task ${completed ? "completed" : ""}`} title={`Task ${id}`}>
       <input
         type="checkbox"
         checked={completed}
-        onChange={() => onToggleComplete(id)} // Pass the taskId to onToggleComplete
+        onChange={() => onToggleComplete(id)}
       />
       {isEditing && (
         <>
@@ -92,18 +103,22 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
       )}
       {!isEditing && (
         <>
-          <h3 onClick={handleTitleClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+          <h3
+            onClick={handleTitleClick}
+            style={{ cursor: "pointer", textDecoration: "underline" }}
+          >
             {title}
           </h3>
-          {description && (
-            <span style={{ display: 'none' }}>{description}</span>
-          )}
+          {description && <span style={{ display: "none" }}>{description}</span>}
           {subTasks && subTasks.length > 0 && (
             <div className="sub-tasks">
               <h4>Sub-Tasks:</h4>
               <ul>
                 {subTasks.map((subTask) => (
-                  <SubTask key={subTask.id} subTaskDescription={subTask.description} />
+                  <SubTask
+                    key={subTask.id}
+                    subTaskDescription={subTask.description}
+                  />
                 ))}
               </ul>
             </div>
@@ -126,6 +141,4 @@ const Task = ({ id, title, description, completed, subTasks, onToggleComplete, o
       <button onClick={() => onDelete(id)}>X</button>
     </div>
   );
-};
-
-export default Task;
+}
