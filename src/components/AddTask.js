@@ -3,28 +3,14 @@
 import { useFormik } from "formik";
 import React from "react";
 import Card from "../shared/Card";
-
 import * as Yup from "yup";
 
 export default function AddTask({ handelAdd }) {
-  //   const [title, setTitle] = useState("");
-  //   const [description, setDescription] = useState("");
-
-  //   const handelSubmit = (e) => {
-  //     e.preventDefault();
-  //     const newTask = {
-  //       title,
-  //       description,
-  //     };
-  //     handelAdd(newTask);
-  //     setTitle("");
-  //     setDescription("");
-  //   };
-
   const formik = useFormik({
     initialValues: {
       title: "",
       description: "",
+      subTaskDescription: "",
     },
 
     validationSchema: Yup.object({
@@ -32,16 +18,18 @@ export default function AddTask({ handelAdd }) {
         .max(10, "Title must be 10 characters or less")
         .required("Title is required"),
       description: Yup.string()
-        .max(20, "Description must bt 20 characters or less")
+        .max(20, "Description must be 20 characters or less")
         .required("Description is required"),
+      subTaskDescription: Yup.string().max(
+        20,
+        "Sub-Task Description must be 20 characters or less"
+      ),
     }),
 
     onSubmit: (values) => {
       handelAdd(values);
     },
   });
-
-  //   console.log(formik.errors);
 
   return (
     <Card>
@@ -61,13 +49,8 @@ export default function AddTask({ handelAdd }) {
               type="text"
               className="input"
               name="title"
-              //   value={title}
-              placeholder="Task Title"
-              //   onChange={(e) => {
-              //     setTitle(e.target.value);
-              //   }}
-
               onChange={formik.handleChange}
+              placeholder="Task Title"
             />
           </div>
           <div className="input_row">
@@ -86,13 +69,19 @@ export default function AddTask({ handelAdd }) {
             <input
               type="text"
               className="input"
-              //   value={description}
               name="description"
-              placeholder="Task Description"
-              //   onChange={(e) => {
-              //     setDescription(e.target.value);
-              //   }}
               onChange={formik.handleChange}
+              placeholder="Task Description"
+            />
+          </div>
+          <div className="input_row">
+            <label htmlFor="subTaskDescription">Sub-Task Description</label>
+            <input
+              type="text"
+              className="input"
+              name="subTaskDescription"
+              onChange={formik.handleChange}
+              placeholder="Sub-Task Description"
             />
           </div>
         </div>

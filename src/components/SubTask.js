@@ -1,13 +1,10 @@
-// SubTask.js
+// ./components/Task/SubTask.js
+
 import React from 'react';
 
-const SubTask = ({ description, completed, onComplete, onDelete }) => {
+const SubTask = ({ subTaskDescription }) => {
   return (
-    <div className={`sub-task ${completed ? 'completed' : ''}`}>
-      <input type="checkbox" checked={completed} onChange={onComplete} />
-      <span>{description}</span>
-      <button onClick={onDelete}>Delete Sub-Task</button>
-    </div>
+    <li>{subTaskDescription}</li>
   );
 };
 
