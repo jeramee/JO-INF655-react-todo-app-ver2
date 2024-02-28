@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Task.css';   // Update the import path
+import './Task.css';
 
 const Task = ({
   id,
@@ -13,6 +13,7 @@ const Task = ({
   onAddSubTask,
   onCompleteSubTask,
   onDeleteSubTask,
+  readOnly, // New prop to determine if the task is read-only
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
@@ -57,6 +58,7 @@ const Task = ({
         type="checkbox"
         checked={completed}
         onChange={() => onToggleComplete(id)} // Pass the taskId to onToggleComplete
+        disabled={readOnly} // Disable checkbox if readOnly is true
       />
       {isEditing && (
         <>
@@ -65,6 +67,7 @@ const Task = ({
             value={editedTitle}
             onChange={(e) => setEditedTitle(e.target.value)}
             placeholder="Task Title"
+            readOnly={readOnly} // Make title input readOnly if readOnly is true
           />
           <br />
           <input
@@ -72,6 +75,7 @@ const Task = ({
             value={editedDescription}
             onChange={(e) => setEditedDescription(e.target.value)}
             placeholder="Task Description"
+            readOnly={readOnly} // Make description input readOnly if readOnly is true
           />
           {addingDescription && (
             <div>
@@ -126,14 +130,14 @@ const Task = ({
           <button onClick={() => setEditing(false)}>Cancel</button>
         </>
       )}
-      {!isEditing && (
+      {!isEditing && !readOnly && ( // Display edit buttons only if not in edit mode and not read-only
         <>
           <button onClick={() => setEditing(true)}>Edit</button>
           <button onClick={handleAddDescription}>Add/Edit Description</button>
           <button onClick={handleAddSubTask}>Add Sub-Task</button>
         </>
       )}
-      <button onClick={() => onDelete(id)}>X</button>
+      {!readOnly && <button onClick={() => onDelete(id)}>X</button>} {/* Display delete button only if not read-only */}
     </div>
   );
 };

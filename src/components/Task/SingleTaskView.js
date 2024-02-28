@@ -1,4 +1,3 @@
-// ./components/Task/SingleTaskView.js
 import React from 'react';
 import Task from './Task';
 import TaskData from './TaskData';
@@ -27,9 +26,16 @@ const SingleTaskView = ({ match }) => {
         onCompleteSubTask={() => {}}
         onDeleteSubTask={() => {}}
       />
+      <div>
+        {/* Display task details */}
+        <p>ID: {task.id}</p>
+        <p>Title: {task.title}</p>
+        <p>Description: {task.description}</p>
+        <p>Completed: {task.checked ? 'Yes' : 'No'}</p>
+        {/* You can add more details as needed */}
+      </div>
     </div>
   );
 };
 
 export default SingleTaskView;
-

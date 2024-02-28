@@ -99,17 +99,21 @@ const App = () => {
     <div className="app">
       <h1>Task Manager</h1>
 
-      <Task
-        title="Task Title"
-        description="Task Description"
-        subTasks={tasks[0] ? tasks[0].subTasks : []}
-        onEdit={handleEditTask}
-        onAddSubTask={handleAddSubTask}
-        onToggleComplete={handleToggleComplete}
-        onDelete={handleDeleteTask}
-        onCompleteSubTask={handleCompleteSubTask}
-        onDeleteSubTask={handleDeleteSubTask}
-      />
+      {tasks.map((task) => (
+        <Task
+          key={task.id}
+          title={task.title}
+          description={task.description}
+          subTasks={task.subTasks}
+          onEdit={handleEditTask}
+          onAddSubTask={handleAddSubTask}
+          onToggleComplete={() => handleToggleComplete(task.id)}
+          onDelete={() => handleDeleteTask(task.id)}
+          onCompleteSubTask={handleCompleteSubTask}
+          onDeleteSubTask={handleDeleteSubTask}
+        />
+      ))}
+
       <TaskInputForm onAddTask={handleAddTask} />
       <header>
         <a
