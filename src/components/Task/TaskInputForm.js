@@ -16,6 +16,7 @@ const TaskInputForm = ({ onAddTask }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (taskTitle.trim() !== '' && taskDescription.trim() !== '') {
       onAddTask({
         title: taskTitle,
@@ -23,6 +24,7 @@ const TaskInputForm = ({ onAddTask }) => {
         completed: false,
         subTasks: [...subTasks],
       });
+
       setTaskTitle('');
       setTaskDescription('');
       setSubTasks([]);
@@ -33,7 +35,7 @@ const TaskInputForm = ({ onAddTask }) => {
   useEffect(() => {
     const fetchTaskData = async () => {
       try {
-        const module = await import('./TaskData');
+        const module = await import('./TaskData'); // Assuming TaskData is in the same directory
         setTaskData(module.default || module);
       } catch (error) {
         console.error('Failed to load TaskData:', error);
@@ -46,8 +48,39 @@ const TaskInputForm = ({ onAddTask }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* Your form inputs and other elements go here */}
-      
+      <input
+        type="text"
+        value={taskTitle}
+        onChange={(e) => setTaskTitle(e.target.value)}
+        placeholder="Enter task title"
+      />
+      <br />
+      <input
+        type="text"
+        value={taskDescription}
+        onChange={(e) => setTaskDescription(e.target.value)}
+        placeholder="Enter task description"
+      />
+      <br />
+      {/* Sub-tasks */}
+      {subTasks.map((subTask, index) => (
+        <div key={index}>
+          <input type="checkbox" checked={subTask.completed} readOnly />
+          {subTask.description}
+        </div>
+      ))}
+      <input
+        type="text"
+        value={newSubTask}
+        onChange={(e) => setNewSubTask(e.target.value)}
+        placeholder="Add Sub-Task"
+      />
+      <button type="button" onClick={handleAddSubTask}>
+        Add Sub-Task
+      </button>
+      <br />
+      <button type="submit">Add Task</button>
+
       {/* Display tasks from TaskData */}
       <div>
         <h3>Existing Tasks</h3>
@@ -59,8 +92,6 @@ const TaskInputForm = ({ onAddTask }) => {
           </div>
         ))}
       </div>
-
-      {/* Rest of your form elements go here */}
     </form>
   );
 };
