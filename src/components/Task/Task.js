@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './Task.css'
+import './Task.css';
+
 const Task = ({ id, title, description, completed, onToggleComplete, onDelete, onEdit }) => {
   const [isEditing, setEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
